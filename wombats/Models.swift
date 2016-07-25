@@ -30,11 +30,10 @@ struct Space {
         case ai(AI)
     }
 
+    //corresponds to type from API
     let kind: Kind
 
-//    let uuid: Int?
-
-    struct Player {
+    struct Player: HasEnergy {
         let energy: Int
     }
     
@@ -50,8 +49,9 @@ struct Space {
         
     }
     
-    struct AI {
+    struct AI: HasEnergy {
         let uuid: Int
+        let energy: Int
     }
 }
 
@@ -151,7 +151,8 @@ extension Space.AI: JSONDecodable {
     static func decodeJSON(json: AnyObject) throws -> Space.AI {
         let json = JSON(dict: json as! NSDictionary)
         let uuid = try! json.requiredInt(key: "uuid")
-        return Space.AI(uuid: uuid)
+        let energy = try! json.requiredInt(key: "energy")
+        return Space.AI(uuid: uuid, energy: energy)
     }
 }
 
@@ -162,9 +163,6 @@ extension Space.Block: JSONDecodable {
         return Space.Block(display: display)
     }
 }
-
-
-// open block AI
 
 
 
